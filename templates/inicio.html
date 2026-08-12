@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+
+<div class="encabezado">
+  <div>
+    <h1>Inicio</h1>
+    <p>Resumen general del sistema</p>
+  </div>
+  <div class="botones">
+    <a href="{{ url_for('nuevo_paciente') }}" class="btn">＋ Nuevo paciente</a>
+    <a href="{{ url_for('pacientes') }}" class="btn btn--claro">Ver pacientes</a>
+  </div>
+</div>
+
+{# ---------- Totales ---------- #}
+<div class="totales">
+  <div class="total total--principal">
+    <div class="total__etiqueta">Pacientes activos</div>
+    <div class="total__valor">{{ activos }}</div>
+  </div>
+  <div class="total">
+    <div class="total__etiqueta">Pacientes inactivos</div>
+    <div class="total__valor">{{ inactivos }}</div>
+  </div>
+  <div class="total">
+    <div class="total__etiqueta">Sesiones registradas</div>
+    <div class="total__valor">{{ total_sesiones }}</div>
+  </div>
+</div>
+
+{# ---------- Pacientes activos ---------- #}
+<div class="tarjeta">
+  <div class="tarjeta__titulo">
+    <h2>Pacientes activos</h2>
+    <a href="{{ url_for('pacientes') }}" class="btn btn--claro btn--chico">
+      Ver todos</a>
+  </div>
+
+  {% if recientes %}
+    <div class="tabla-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th><th>Expediente</th><th>Sesiones</th>
+            <th>Última sesión</th><th>Próxima sesión</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in recientes %}
+          <tr>
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.expediente }}</td>
+            <td class="centro">{{ p.total_sesiones }}</td>
+            <td>{{ p.ultima_sesion | fecha }}</td>
+            <td>{{ p.proxima_sesion | fecha }}</td>
+            <td>
+              <a href="{{ url_for('ver_paciente', paciente_id=p.id) }}"
+                 class="btn btn--claro btn--chico">Abrir</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="vacio">
+      <p>Todavía no hay pacientes registrados.</p>
+      <a href="{{ url_for('nuevo_paciente') }}" class="btn">
+        Registrar el primer paciente</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

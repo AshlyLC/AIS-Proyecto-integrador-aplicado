@@ -1,0 +1,13 @@
+# La base de datos contiene información de pacientes: nunca debe subirse.
+datos/
+*.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editor / sistema operativo
+.vscode/
+.DS_Store

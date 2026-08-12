@@ -1,0 +1,46 @@
+{# Plantilla base: la estructura común de todas las páginas. #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}Registro de Pacientes{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗂️</text></svg>">
+</head>
+<body>
+
+{% if session.usuario_id %}
+  <header class="barra">
+    <a href="{{ url_for('inicio') }}" class="barra__marca">
+      <span>◈</span> Registro de Pacientes
+    </a>
+    <nav>
+      <a href="{{ url_for('inicio') }}"
+         class="{{ 'activo' if request.endpoint == 'inicio' }}">Inicio</a>
+      <a href="{{ url_for('pacientes') }}"
+         class="{{ 'activo' if request.endpoint in ['pacientes', 'ver_paciente'] }}">Pacientes</a>
+      <a href="{{ url_for('nuevo_paciente') }}"
+         class="{{ 'activo' if request.endpoint == 'nuevo_paciente' }}">Nuevo paciente</a>
+    </nav>
+    <span class="barra__usuario">
+      {{ session.usuario_nombre }} ·
+      <a href="{{ url_for('logout') }}">Salir</a>
+    </span>
+  </header>
+
+  <main class="contenedor">
+    {% include "_mensajes.html" %}
+    {% block contenido %}{% endblock %}
+  </main>
+
+  <footer class="pie">
+    Sistema de registro administrativo. La información la introduce y valida
+    la profesional.
+  </footer>
+{% else %}
+  {% block contenido_publico %}{% endblock %}
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Página no encontrada{% endblock %}
+
+{% block contenido %}
+<div class="tarjeta">
+  <div class="tarjeta__cuerpo">
+    <div class="vacio">
+      <h2>Página no encontrada</h2>
+      <p>El paciente o la sesión que buscas no existe.</p>
+      <a href="{{ url_for('inicio') }}" class="btn">Volver al inicio</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block titulo %}Historial · {{ paciente.nombre }}{% endblock %}
+
+{% block contenido %}
+
+<div class="encabezado">
+  <div>
+    <h1>Historial de sesiones</h1>
+    <p>{{ paciente.nombre }} · {{ paciente.expediente }} ·
+       {{ sesiones | length }} sesión{{ '' if sesiones | length == 1 else 'es' }}</p>
+  </div>
+  <div class="botones">
+    <a href="{{ url_for('ver_paciente', paciente_id=paciente.id) }}"
+       class="btn btn--claro">← Volver al paciente</a>
+    <a href="{{ url_for('nueva_sesion', paciente_id=paciente.id) }}"
+       class="btn">＋ Nueva sesión</a>
+  </div>
+</div>
+
+<div class="tarjeta">
+  <div class="tarjeta__titulo">
+    <h2>Sesiones en orden cronológico</h2>
+    <small>De la más antigua a la más reciente</small>
+  </div>
+
+  {% if sesiones %}
+    <div class="tabla-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Sesión</th><th>Fecha</th><th>Tema</th>
+            <th>Avance</th><th>Próxima</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in sesiones %}
+          <tr>
+            <td class="centro">{{ s.numero_sesion }}</td>
+            <td>{{ s.fecha | fecha }}</td>
+            <td>{{ s.tema or '—' }}</td>
+            <td>
+              <span class="etiqueta etiqueta--{{ s.nivel_avance | lower }}">
+                {{ s.nivel_avance }}</span>
+            </td>
+            <td>{{ s.proxima_sesion | fecha }}</td>
+            <td style="white-space:nowrap">
+              <a href="{{ url_for('ver_sesion', sesion_id=s.id) }}"
+                 class="btn btn--claro btn--chico">Ver</a>
+              <a href="{{ url_for('editar_sesion', sesion_id=s.id) }}"
+                 class="btn btn--claro btn--chico">Editar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="vacio">
+      <p>Todavía no hay sesiones registradas para este paciente.</p>
+      <a href="{{ url_for('nueva_sesion', paciente_id=paciente.id) }}" class="btn">
+        ＋ Registrar la primera sesión</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

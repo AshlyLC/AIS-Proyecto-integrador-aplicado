@@ -1,0 +1,4 @@
+{# Mensajes de éxito, aviso y error que muestra el sistema. #}
+{% for categoria, texto in get_flashed_messages(with_categories=true) %}
+  <div class="mensaje mensaje--{{ categoria }}">{{ texto }}</div>
+{% endfor %}

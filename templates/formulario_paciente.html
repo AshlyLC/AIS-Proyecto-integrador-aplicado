@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block contenido %}
+
+<div class="encabezado">
+  <div>
+    <h1>{{ titulo }}</h1>
+    <p>Expediente: <strong>{{ expediente }}</strong>
+      {% if not paciente %}(se asigna automáticamente){% endif %}</p>
+  </div>
+</div>
+
+<form method="post">
+
+  <fieldset>
+    <legend>Datos generales</legend>
+    <div class="campos">
+      <div class="campo campo--ancho">
+        <label for="nombre">Nombre completo *</label>
+        <input type="text" id="nombre" name="nombre" required maxlength="150"
+               value="{{ paciente.nombre if paciente else '' }}">
+      </div>
+      <div class="campo">
+        <label for="fecha_nacimiento">Fecha de nacimiento</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
+               value="{{ paciente.fecha_nacimiento if paciente else '' }}">
+      </div>
+      <div class="campo">
+        <label for="edad">Edad</label>
+        <input type="number" id="edad" name="edad" min="0" max="120"
+               value="{{ paciente.edad if paciente and paciente.edad else '' }}">
+        <span class="ayuda">Se calcula sola si indicas la fecha de nacimiento.</span>
+      </div>
+      <div class="campo">
+        <label for="sexo">Sexo</label>
+        <select id="sexo" name="sexo">
+          <option value="">— Selecciona —</option>
+          {% for opcion in opciones_sexo %}
+            <option value="{{ opcion }}"
+              {{ 'selected' if paciente and paciente.sexo == opcion }}>
+              {{ opcion }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="campo">
+        <label for="ocupacion">Ocupación</label>
+        <input type="text" id="ocupacion" name="ocupacion" maxlength="100"
+               value="{{ paciente.ocupacion if paciente else '' }}">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Contacto</legend>
+    <div class="campos">
+      <div class="campo">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" maxlength="20"
+               value="{{ paciente.telefono if paciente else '' }}">
+      </div>
+      <div class="campo">
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" name="correo" maxlength="120"
+               value="{{ paciente.correo if paciente else '' }}">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Información clínica</legend>
+    <div class="campos">
+      <div class="campo campo--ancho">
+        <label for="motivo_consulta">Motivo de consulta</label>
+        <textarea id="motivo_consulta" name="motivo_consulta"
+          >{{ paciente.motivo_consulta if paciente else '' }}</textarea>
+      </div>
+      <div class="campo campo--ancho">
+        <label for="antecedentes">Antecedentes relevantes</label>
+        <textarea id="antecedentes" name="antecedentes"
+          >{{ paciente.antecedentes if paciente else '' }}</textarea>
+        <span class="ayuda">
+          Atención psicológica o médica previa, medicación, u otros datos
+          que consideres importantes.
+        </span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Situación en la consulta</legend>
+    <div class="campos">
+      <div class="campo">
+        <label for="fecha_apertura">Fecha de apertura</label>
+        <input type="date" id="fecha_apertura" name="fecha_apertura"
+               value="{{ paciente.fecha_apertura if paciente else hoy() }}">
+      </div>
+      <div class="campo">
+        <label for="estado">Estado</label>
+        <select id="estado" name="estado">
+          {% for opcion in opciones_estado %}
+            <option value="{{ opcion }}"
+              {{ 'selected' if paciente and paciente.estado == opcion }}>
+              {{ opcion }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="botones botones--derecha">
+    {% if paciente %}
+      <a href="{{ url_for('ver_paciente', paciente_id=paciente.id) }}"
+         class="btn btn--claro">Cancelar</a>
+    {% else %}
+      <a href="{{ url_for('pacientes') }}" class="btn btn--claro">Cancelar</a>
+    {% endif %}
+    <button type="submit" class="btn">Guardar</button>
+  </div>
+</form>
+
+<script>
+  // Calcula la edad automáticamente al escribir la fecha de nacimiento.
+  document.getElementById('fecha_nacimiento').addEventListener('change', function () {
+    if (!this.value) return;
+    const nacimiento = new Date(this.value + 'T00:00:00');
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
+    if (edad >= 0 && edad < 120) document.getElementById('edad').value = edad;
+  });
+</script>
+{% endblock %}

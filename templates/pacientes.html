@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block titulo %}Pacientes{% endblock %}
+
+{% block contenido %}
+
+<div class="encabezado">
+  <div>
+    <h1>Pacientes</h1>
+    <p>{{ pacientes | length }} paciente{{ '' if pacientes | length == 1 else 's' }}
+       {% if termino %}encontrado{{ '' if pacientes | length == 1 else 's' }}{% endif %}</p>
+  </div>
+  <a href="{{ url_for('nuevo_paciente') }}" class="btn">＋ Nuevo paciente</a>
+</div>
+
+{# ---------- Buscador ---------- #}
+<div class="tarjeta">
+  <div class="tarjeta__cuerpo">
+    <form method="get" class="buscador">
+      <input type="search" name="q" value="{{ termino }}"
+             placeholder="Buscar por nombre, expediente o teléfono">
+      <button type="submit" class="btn">Buscar</button>
+      {% if termino %}
+        <a href="{{ url_for('pacientes') }}" class="btn btn--claro">Limpiar</a>
+      {% endif %}
+    </form>
+  </div>
+</div>
+
+{# ---------- Listado ---------- #}
+<div class="tarjeta">
+  {% if pacientes %}
+    <div class="tabla-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th><th>Expediente</th><th>Edad</th><th>Teléfono</th>
+            <th>Estado</th><th>Sesiones</th><th>Última sesión</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in pacientes %}
+          <tr>
+            <td><strong>{{ p.nombre }}</strong></td>
+            <td>{{ p.expediente }}</td>
+            <td class="centro">{{ p.edad or '—' }}</td>
+            <td>{{ p.telefono or '—' }}</td>
+            <td>
+              <span class="etiqueta etiqueta--{{ p.estado | lower }}">
+                {{ p.estado }}</span>
+            </td>
+            <td class="centro">{{ p.total_sesiones }}</td>
+            <td>{{ p.ultima_sesion | fecha }}</td>
+            <td>
+              <a href="{{ url_for('ver_paciente', paciente_id=p.id) }}"
+                 class="btn btn--claro btn--chico">Abrir</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="vacio">
+      {% if termino %}
+        <p>No se encontró ningún paciente con «{{ termino }}».</p>
+        <a href="{{ url_for('pacientes') }}" class="btn btn--claro">Ver todos</a>
+      {% else %}
+        <p>Todavía no hay pacientes registrados.</p>
+        <a href="{{ url_for('nuevo_paciente') }}" class="btn">
+          Registrar el primer paciente</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

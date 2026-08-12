@@ -1,0 +1,6 @@
+# Única dependencia del proyecto.
+# SQLite y el cifrado de contraseñas ya vienen incluidos en Python y en Flask.
+#
+# Instalación:  pip install -r requirements.txt
+
+Flask>=3.0

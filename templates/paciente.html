@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block titulo %}{{ paciente.nombre }}{% endblock %}
+
+{% block contenido %}
+
+{# ---------- Ficha resumida ---------- #}
+<div class="tarjeta">
+  <div class="tarjeta__cuerpo">
+    <div class="ficha">
+      <div class="ficha__inicial">{{ paciente.nombre[0] | upper }}</div>
+      <div style="flex:1">
+        <h2>{{ paciente.nombre }}</h2>
+        <small>
+          {{ paciente.expediente }}
+          {% if paciente.edad %} · {{ paciente.edad }} años{% endif %}
+          {% if paciente.sexo %} · {{ paciente.sexo }}{% endif %}
+        </small>
+      </div>
+      <span class="etiqueta etiqueta--{{ paciente.estado | lower }}">
+        {{ paciente.estado }}</span>
+    </div>
+
+    <div class="datos">
+      <div>
+        <div class="dato__etiqueta">Fecha de apertura</div>
+        <div class="dato__valor">{{ paciente.fecha_apertura | fecha }}</div>
+      </div>
+      <div>
+        <div class="dato__etiqueta">Sesiones</div>
+        <div class="dato__valor">{{ paciente.total_sesiones }}</div>
+      </div>
+      <div>
+        <div class="dato__etiqueta">Última sesión</div>
+        <div class="dato__valor">{{ paciente.ultima_sesion | fecha }}</div>
+      </div>
+      <div>
+        <div class="dato__etiqueta">Próxima sesión</div>
+        <div class="dato__valor">{{ paciente.proxima_sesion | fecha }}</div>
+      </div>
+      <div>
+        <div class="dato__etiqueta">Teléfono</div>
+        <div class="dato__valor">{{ paciente.telefono or '—' }}</div>
+      </div>
+      <div>
+        <div class="dato__etiqueta">Correo</div>
+        <div class="dato__valor">{{ paciente.correo or '—' }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# ---------- Acciones ---------- #}
+<div class="tarjeta">
+  <div class="tarjeta__cuerpo">
+    <div class="botones">
+      <a href="{{ url_for('nueva_sesion', paciente_id=paciente.id) }}"
+         class="btn">＋ Nueva sesión</a>
+      <a href="{{ url_for('historial', paciente_id=paciente.id) }}"
+         class="btn btn--claro">Historial de sesiones</a>
+      <a href="{{ url_for('editar_paciente', paciente_id=paciente.id) }}"
+         class="btn btn--claro">Editar paciente</a>
+
+      <form method="post"
+            action="{{ url_for('cambiar_estado', paciente_id=paciente.id) }}">
+        {% if paciente.estado == 'Activo' %}
+          <input type="hidden" name="estado" value="Inactivo">
+          <button type="submit" class="btn btn--claro">Marcar como inactivo</button>
+        {% else %}
+          <input type="hidden" name="estado" value="Activo">
+          <button type="submit" class="btn btn--claro">Reactivar paciente</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+
+{# ---------- Información clínica ---------- #}
+<div class="tarjeta">
+  <div class="tarjeta__titulo"><h2>Información clínica</h2></div>
+  <div class="tarjeta__cuerpo">
+    <div class="bloque">
+      <h3>Motivo de consulta</h3>
+      {% if paciente.motivo_consulta %}
+        <p>{{ paciente.motivo_consulta }}</p>
+      {% else %}
+        <p class="sin-datos">Sin información registrada.</p>
+      {% endif %}
+    </div>
+    <div class="bloque">
+      <h3>Antecedentes relevantes</h3>
+      {% if paciente.antecedentes %}
+        <p>{{ paciente.antecedentes }}</p>
+      {% else %}
+        <p class="sin-datos">Sin información registrada.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{# ---------- Últimas sesiones ---------- #}
+<div class="tarjeta">
+  <div class="tarjeta__titulo">
+    <h2>Últimas sesiones</h2>
+    {% if total > 5 %}
+      <a href="{{ url_for('historial', paciente_id=paciente.id) }}"
+         class="btn btn--claro btn--chico">Ver las {{ total }}</a>
+    {% endif %}
+  </div>
+
+  {% if sesiones %}
+    <div class="tabla-scroll">
+      <table>
+        <thead>
+          <tr><th>Sesión</th><th>Fecha</th><th>Tema</th><th>Avance</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for s in sesiones %}
+          <tr>
+            <td class="centro">{{ s.numero_sesion }}</td>
+            <td>{{ s.fecha | fecha }}</td>
+            <td>{{ s.tema or '—' }}</td>
+            <td>
+              <span class="etiqueta etiqueta--{{ s.nivel_avance | lower }}">
+                {{ s.nivel_avance }}</span>
+            </td>
+            <td>
+              <a href="{{ url_for('ver_sesion', sesion_id=s.id) }}"
+                 class="btn btn--claro btn--chico">Ver</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="vacio">
+      <p>Este paciente todavía no tiene sesiones registradas.</p>
+      <a href="{{ url_for('nueva_sesion', paciente_id=paciente.id) }}" class="btn">
+        ＋ Registrar la primera sesión</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

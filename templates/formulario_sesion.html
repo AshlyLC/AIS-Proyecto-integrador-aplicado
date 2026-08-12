@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block titulo %}{{ titulo }} · {{ paciente.nombre }}{% endblock %}
+
+{% block contenido %}
+
+<div class="encabezado">
+  <div>
+    <h1>{{ titulo }}</h1>
+    <p>{{ paciente.nombre }} · {{ paciente.expediente }}</p>
+  </div>
+</div>
+
+<form method="post">
+
+  <fieldset>
+    <legend>Datos de la sesión</legend>
+    <div class="campos">
+      <div class="campo">
+        <label>Expediente</label>
+        <input type="text" value="{{ paciente.expediente }}" readonly>
+        <span class="ayuda">Se toma del paciente.</span>
+      </div>
+      <div class="campo">
+        <label>Número de sesión</label>
+        <input type="text" value="{{ numero }}" readonly>
+        <span class="ayuda">Se calcula automáticamente.</span>
+      </div>
+      <div class="campo">
+        <label for="fecha">Fecha *</label>
+        <input type="date" id="fecha" name="fecha" required
+               value="{{ sesion.fecha if sesion else hoy() }}">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Contenido</legend>
+    <div class="campos">
+      <div class="campo campo--ancho">
+        <label for="tema">Tema trabajado</label>
+        <input type="text" id="tema" name="tema" maxlength="200"
+               placeholder="Ej.: manejo de ansiedad ante exámenes"
+               value="{{ sesion.tema if sesion else '' }}">
+      </div>
+      <div class="campo campo--ancho">
+        <label for="resumen">Resumen de la sesión</label>
+        <textarea id="resumen" name="resumen" style="min-height:140px"
+          >{{ sesion.resumen if sesion else '' }}</textarea>
+      </div>
+      <div class="campo campo--ancho">
+        <label for="tareas">Tareas asignadas</label>
+        <textarea id="tareas" name="tareas">{{ sesion.tareas if sesion else '' }}</textarea>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Seguimiento</legend>
+    <div class="campos">
+      <div class="campo campo--ancho">
+        <label>Nivel de avance percibido</label>
+        <div class="opciones">
+          {% for opcion in opciones_avance %}
+            <label class="opcion">
+              <input type="radio" name="nivel_avance" value="{{ opcion }}"
+                {{ 'checked' if (sesion.nivel_avance if sesion else 'Moderado') == opcion }}>
+              {{ opcion }}
+            </label>
+          {% endfor %}
+        </div>
+        <span class="ayuda">
+          Es tu valoración profesional; el sistema no la calcula ni la interpreta.
+        </span>
+      </div>
+      <div class="campo">
+        <label for="proxima_sesion">Fecha de la próxima sesión</label>
+        <input type="date" id="proxima_sesion" name="proxima_sesion"
+               value="{{ sesion.proxima_sesion if sesion and sesion.proxima_sesion else '' }}">
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="botones botones--derecha">
+    <a href="{{ url_for('ver_paciente', paciente_id=paciente.id) }}"
+       class="btn btn--claro">Cancelar</a>
+    <button type="submit" class="btn">Guardar sesión</button>
+  </div>
+</form>
+{% endblock %}

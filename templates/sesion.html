@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block titulo %}Sesión {{ sesion.numero_sesion }} · {{ sesion.paciente_nombre }}{% endblock %}
+
+{% block contenido %}
+
+<div class="encabezado">
+  <div>
+    <h1>Sesión {{ sesion.numero_sesion }}</h1>
+    <p>{{ sesion.paciente_nombre }} · {{ sesion.expediente }} ·
+       {{ sesion.fecha | fecha }}</p>
+  </div>
+  <div class="botones">
+    <a href="{{ url_for('historial', paciente_id=sesion.paciente_id) }}"
+       class="btn btn--claro">← Volver al historial</a>
+    <a href="{{ url_for('editar_sesion', sesion_id=sesion.id) }}"
+       class="btn">Editar sesión</a>
+  </div>
+</div>
+
+<div class="tarjeta">
+  <div class="tarjeta__titulo">
+    <h2>Nota de la sesión</h2>
+    <span class="etiqueta etiqueta--{{ sesion.nivel_avance | lower }}">
+      Avance: {{ sesion.nivel_avance }}</span>
+  </div>
+  <div class="tarjeta__cuerpo">
+
+    <div class="datos" style="margin-top:0;padding-top:0;border-top:0">
+      <div>
+        <div class="dato__etiqueta">Expediente</div>
+        <div class="dato__valor">{{ sesion.expediente }}</div>
+      </div>
+      <div>
+        <div class="dato__etiqueta">Fecha</div>
+        <div class="dato__valor">{{ sesion.fecha | fecha }}</div>
+      </div>
+      <div>
+        <div class="dato__etiqueta">Próxima sesión</div>
+        <div class="dato__valor">{{ sesion.proxima_sesion | fecha }}</div>
+      </div>
+    </div>
+
+    <div class="bloque" style="margin-top:1.3rem">
+      <h3>Tema trabajado</h3>
+      {% if sesion.tema %}<p>{{ sesion.tema }}</p>
+      {% else %}<p class="sin-datos">Sin información registrada.</p>{% endif %}
+    </div>
+
+    <div class="bloque">
+      <h3>Resumen de la sesión</h3>
+      {% if sesion.resumen %}<p>{{ sesion.resumen }}</p>
+      {% else %}<p class="sin-datos">Sin información registrada.</p>{% endif %}
+    </div>
+
+    <div class="bloque">
+      <h3>Tareas asignadas</h3>
+      {% if sesion.tareas %}<p>{{ sesion.tareas }}</p>
+      {% else %}<p class="sin-datos">Sin tareas asignadas.</p>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

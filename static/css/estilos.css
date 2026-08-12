@@ -1,0 +1,284 @@
+/* ==========================================================================
+   estilos.css — apariencia del sistema
+   Los colores están definidos arriba, en :root. Cambiando esas cuatro líneas
+   cambia el aspecto de toda la aplicación.
+   ========================================================================== */
+
+:root {
+  --texto:        #1f2933;
+  --texto-suave:  #5b6b75;
+  --texto-tenue:  #8d99a3;
+  --fondo:        #f5f7f8;
+  --blanco:       #ffffff;
+  --borde:        #e1e7ea;
+  --principal:    #3f6f78;
+  --principal-osc:#2f545b;
+  --principal-cla:#e8f1f2;
+  --verde:        #2f7a5b;  --verde-fondo: #e7f4ee;
+  --ambar:        #9a6a1c;  --ambar-fondo: #fdf3e2;
+  --rojo:         #a03d3d;  --rojo-fondo:  #fbecec;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+h1, h2, h3 { margin: 0 0 .5rem; line-height: 1.3; }
+h1 { font-size: 1.3rem; }
+h2 { font-size: 1.05rem; }
+p  { margin: 0 0 .75rem; }
+a  { color: var(--principal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* --- Barra de navegación superior --------------------------------------- */
+.barra {
+  background: var(--blanco);
+  border-bottom: 1px solid var(--borde);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.barra__marca {
+  font-weight: 600;
+  padding: 1rem 0;
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.barra__marca span {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  background: var(--principal); color: #fff;
+  border-radius: 7px; font-size: .9rem;
+}
+.barra__marca:hover { text-decoration: none; }
+.barra nav { display: flex; gap: .25rem; flex: 1; flex-wrap: wrap; }
+.barra nav a {
+  padding: 1rem .85rem;
+  color: var(--texto-suave);
+  font-size: .9rem;
+  border-bottom: 2px solid transparent;
+}
+.barra nav a:hover { color: var(--texto); text-decoration: none; }
+.barra nav a.activo {
+  color: var(--principal-osc);
+  border-bottom-color: var(--principal);
+  font-weight: 600;
+}
+.barra__usuario { font-size: .84rem; color: var(--texto-tenue); }
+
+/* --- Contenedor --------------------------------------------------------- */
+.contenedor { max-width: 1050px; margin: 0 auto; padding: 1.5rem; }
+
+.encabezado {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem;
+}
+.encabezado p { margin: 0; font-size: .86rem; color: var(--texto-tenue); }
+
+/* --- Tarjetas ----------------------------------------------------------- */
+.tarjeta {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 9px;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+}
+.tarjeta__titulo {
+  padding: .8rem 1.1rem;
+  border-bottom: 1px solid var(--borde);
+  background: #fbfcfc;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1rem; flex-wrap: wrap;
+}
+.tarjeta__titulo h2 { margin: 0; }
+.tarjeta__cuerpo { padding: 1.1rem; }
+.tarjeta__cuerpo > :last-child { margin-bottom: 0; }
+
+/* --- Tarjetas de totales ------------------------------------------------ */
+.totales {
+  display: grid; gap: 1rem; margin-bottom: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.total {
+  background: var(--blanco); border: 1px solid var(--borde);
+  border-radius: 9px; padding: 1.1rem;
+}
+.total__etiqueta {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--texto-tenue); margin-bottom: .2rem;
+}
+.total__valor { font-size: 1.9rem; font-weight: 600; line-height: 1.1; }
+.total--principal .total__valor { color: var(--principal); }
+
+/* --- Botones ------------------------------------------------------------ */
+.btn {
+  display: inline-block;
+  padding: .55rem 1rem;
+  border: 1px solid transparent; border-radius: 7px;
+  background: var(--principal); color: #fff;
+  font-family: inherit; font-size: .87rem; font-weight: 500;
+  cursor: pointer; text-align: center;
+}
+.btn:hover { background: var(--principal-osc); text-decoration: none; color: #fff; }
+.btn--claro {
+  background: var(--blanco); color: var(--texto-suave); border-color: #c9d3d8;
+}
+.btn--claro:hover { background: var(--fondo); color: var(--texto); }
+.btn--chico { padding: .35rem .7rem; font-size: .8rem; }
+.btn--ancho { width: 100%; }
+.botones { display: flex; gap: .5rem; flex-wrap: wrap; }
+.botones--derecha { justify-content: flex-end; }
+
+/* --- Formularios -------------------------------------------------------- */
+fieldset {
+  border: 1px solid var(--borde); border-radius: 9px;
+  padding: 1.1rem; margin: 0 0 1.15rem; background: var(--blanco);
+}
+legend {
+  font-weight: 600; font-size: .92rem; color: var(--principal-osc);
+  padding: 0 .4rem;
+}
+.campos {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+.campo { display: flex; flex-direction: column; gap: .3rem; }
+.campo--ancho { grid-column: 1 / -1; }
+.campo label { font-size: .83rem; font-weight: 500; color: var(--texto-suave); }
+.campo .ayuda { font-size: .76rem; color: var(--texto-tenue); }
+
+input[type="text"], input[type="date"], input[type="tel"], input[type="email"],
+input[type="number"], input[type="password"], input[type="search"],
+select, textarea {
+  width: 100%; padding: .55rem .7rem;
+  border: 1px solid #c9d3d8; border-radius: 7px;
+  font-family: inherit; font-size: .88rem; color: var(--texto);
+  background: var(--blanco);
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--principal); outline-offset: -1px;
+}
+input[readonly] { background: var(--fondo); color: var(--texto-suave); }
+textarea { resize: vertical; min-height: 95px; }
+
+.opciones { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.opcion { display: flex; align-items: center; gap: .4rem; font-size: .88rem; }
+.opcion input { width: auto; accent-color: var(--principal); }
+
+.buscador { display: flex; gap: .5rem; flex-wrap: wrap; }
+.buscador input { flex: 1; min-width: 200px; }
+
+/* --- Tablas ------------------------------------------------------------- */
+.tabla-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+th {
+  text-align: left; padding: .65rem .9rem;
+  background: #fbfcfc; border-bottom: 1px solid var(--borde);
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--texto-tenue); white-space: nowrap;
+}
+td { padding: .7rem .9rem; border-bottom: 1px solid var(--borde); }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #fbfcfc; }
+td.centro { text-align: center; color: var(--texto-tenue); }
+
+/* --- Etiquetas de estado ------------------------------------------------ */
+.etiqueta {
+  display: inline-block; padding: .16rem .55rem;
+  border-radius: 999px; font-size: .74rem; font-weight: 600;
+}
+.etiqueta--activo, .etiqueta--alto     { background: var(--verde-fondo); color: var(--verde); }
+.etiqueta--moderado                    { background: var(--ambar-fondo); color: var(--ambar); }
+.etiqueta--bajo                        { background: var(--rojo-fondo);  color: var(--rojo); }
+.etiqueta--inactivo                    { background: #eef1f3; color: var(--texto-suave); }
+
+/* --- Ficha del paciente ------------------------------------------------- */
+.ficha { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.ficha__inicial {
+  width: 50px; height: 50px;
+  display: grid; place-items: center;
+  background: var(--principal-cla); color: var(--principal-osc);
+  border-radius: 50%; font-size: 1.2rem; font-weight: 600;
+}
+.ficha h2 { margin: 0; font-size: 1.2rem; }
+.ficha small { color: var(--texto-tenue); }
+
+.datos {
+  display: grid; gap: .9rem 1.4rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--borde);
+}
+.dato__etiqueta {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--texto-tenue);
+}
+.dato__valor { font-size: .93rem; font-weight: 500; }
+
+/* --- Bloques de texto largo --------------------------------------------- */
+.bloque { margin-bottom: 1.2rem; }
+.bloque:last-child { margin-bottom: 0; }
+.bloque h3 {
+  font-size: .76rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--texto-tenue); margin-bottom: .3rem;
+}
+.bloque p {
+  white-space: pre-wrap; margin: 0;
+  background: var(--fondo); border-left: 3px solid #c9d3d8;
+  border-radius: 0 6px 6px 0; padding: .7rem .9rem; font-size: .91rem;
+}
+.bloque p.sin-datos { color: var(--texto-tenue); font-style: italic; }
+
+/* --- Mensajes ----------------------------------------------------------- */
+.mensaje {
+  padding: .7rem 1rem; border-radius: 7px;
+  margin-bottom: 1rem; font-size: .88rem; border: 1px solid transparent;
+}
+.mensaje--exito { background: var(--verde-fondo); border-color: #bfe0d0; color: var(--verde); }
+.mensaje--error { background: var(--rojo-fondo);  border-color: #ecc6c6; color: var(--rojo); }
+.mensaje--aviso { background: var(--ambar-fondo); border-color: #ecd9b0; color: var(--ambar); }
+
+/* --- Estado vacío ------------------------------------------------------- */
+.vacio { text-align: center; padding: 2.2rem 1rem; color: var(--texto-tenue); }
+.vacio p { margin-bottom: .9rem; }
+
+/* --- Pantalla de acceso ------------------------------------------------- */
+.acceso { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem; }
+.acceso__caja {
+  width: 100%; max-width: 380px;
+  background: var(--blanco); border: 1px solid var(--borde);
+  border-radius: 12px; padding: 2rem;
+}
+.acceso__logo {
+  width: 44px; height: 44px; margin: 0 auto .7rem;
+  display: grid; place-items: center;
+  background: var(--principal); color: #fff;
+  border-radius: 11px; font-size: 1.2rem;
+}
+.acceso__caja h1 { text-align: center; }
+.acceso__caja > p { text-align: center; color: var(--texto-tenue); font-size: .85rem; }
+.acceso .campo { margin-bottom: 1rem; }
+
+/* --- Pie ---------------------------------------------------------------- */
+.pie {
+  text-align: center; padding: 1.5rem;
+  font-size: .78rem; color: var(--texto-tenue);
+}
+
+/* --- Pantallas pequeñas ------------------------------------------------- */
+@media (max-width: 640px) {
+  .barra { padding: 0 1rem; }
+  .barra nav a { padding: .7rem .6rem; }
+  .contenedor { padding: 1rem; }
+  .totales { grid-template-columns: repeat(2, 1fr); }
+}
