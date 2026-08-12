@@ -52,11 +52,6 @@ sistema_pacientes/
 │
 ├── static/css/estilos.css   Toda la apariencia (los colores están arriba).
 │
-├── datos/sistema.db      La base de datos. Se crea sola al arrancar.
-│
-└── documentacion/
-    ├── Documentacion_Sistema_Pacientes.docx   Documento de la tarea.
-    ├── diagrama_casos_uso.png / .svg
-    ├── diagrama_clases.png / .svg
-    └── capturas/         Capturas de pantalla del sistema funcionando.
+└── datos/sistema.db      La base de datos. Se crea sola al arrancar.
+
 ```
